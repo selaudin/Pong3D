@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Game</title>
+		<style>
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: black;
+				margin: 0;
+				overflow: hidden;
+				font-family: arial;
+			}
+			#blocker {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.5);
+			}
+			#gameCanvas {
+				background-color: black;
+				/* width: 640px;
+				height: 300px; */
+				/* margin-left: 130px; */
+				/* margin-right: 130px; */
+			}
+			#scoreboard {
+				text-align: center;
+				font-family: Segoe UI, Helvetica, Ubuntu, sans-serif;
+				color: white;
+			}
+			#scores {
+				text-align: center;
+				font-family: Segoe UI, Helvetica, Ubuntu, sans-serif;
+				font-size:600%; 
+				padding:0; 
+				margin:0;
+				color: white;
+			}
+			#player1, #player2 {
+				float: left;
+				width: 50%;
+				background-color: grey;
+				color: black;
+			}
+			#player1controls, #player2controls, #pause {
+				display:inline-table;
+				width: 24%;
+				margin: 0;
+				background-color: black;
+			}
+			#pause {
+				color: #f00;
+				font-weight: bold;
+				display: inline;
+			}
+		</style>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	</head>
+	<body onload='setup();'>
+		<h1 id='scores'>0-0</h1>
+		<div id='gameCanvas'></div>
+		<script src='./Scripts/three.min.js'></script>
+		<script src='./Scripts/keyboard.js'></script>
+		<script src='./Scripts/gameTut.js'></script>
+		<div id='scoreboard'>
+			<h1 id="pause">GAME PAUSED!</h1>
+			<h1 id='title'>
+				<div id="player1">Player 1</div>
+				<div id='player2'>Player 2</div>
+			</h1>
+			<h2 id='winnerBoard'>First to 5 wins!</h2>
+			<h3 id='player1controls'>A - move left,  D - move right</h3>
+			<h3 id='pause'>P - pause/unpause</h3>
+			<h3 id='player2controls'> <-  move left,   ->  move right</h3>
+		</div>
+	</body>
+</html>
