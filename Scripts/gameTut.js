@@ -16,6 +16,9 @@ var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
 var ball, paddle1, paddle2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 
+// wall
+var wallWidth = 2, wallHeight = 30, wallLength = fieldWidth * 0.97;
+
 // used for changing ball's y rotation
 var hit = 1;
 var prevTime = performance.now();
@@ -197,15 +200,21 @@ function createScene()
     middleLine.castShadow = true;
     scene.add(middleLine);
 
-    // var rightWallGeometry = new THREE.CubeGeometry(WALL_WIDTH, PLAYFIELD_HEIGHT, WALL_HEIGHT);
-    // var rightWallMaterial = new THREE.MeshLambertMaterial({color: WALL_COLOR});
-    // var rightWall = new THREE.Mesh(rightWallGeometry, rightWallMaterial);
-    // rightWall.position.set(PLAYFIELD_WIDTH / 2 + (WALL_WIDTH / 2), 0, WALL_WIDTH);
-    // rightWall.castShadow = true;
-    // rightWall.receiveShadow = true;
-    // scene.add(rightWall);
-
-
+	// create right wall for ball to bounce
+    var rightWallGeometry = new THREE.CubeGeometry(wallLength, wallWidth, wallHeight);
+    var rightWall = new THREE.Mesh(rightWallGeometry, tableMaterial);
+    rightWall.position.set(0, planeHeight/2, 0);
+    rightWall.castShadow = true;
+    rightWall.receiveShadow = true;
+	scene.add(rightWall);
+	
+	// create left wall for ball to bounce
+	var leftWallGeometry = new THREE.CubeGeometry(wallLength, wallWidth, wallHeight);
+    var leftWall = new THREE.Mesh(leftWallGeometry, tableMaterial);
+    leftWall.position.set(0, -(planeHeight/2), 0);
+    leftWall.castShadow = true;
+    leftWall.receiveShadow = true;
+    scene.add(leftWall);
 		
 	// set up the ball size
 	var radius = 5,
@@ -215,7 +224,7 @@ function createScene()
 	//ball texture
 	var ballTexture = new THREE.ImageUtils.loadTexture("images/soccerBall.jpg");
 
-	// // create the sphere's material
+	// create the sphere's material
 	var sphereMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -233,6 +242,7 @@ function createScene()
 	// set ball position
 	ball.position.x = 0;
 	ball.position.y = 0;
+
 	// set ball above the table surface
 	ball.position.z = radius;
 	ball.receiveShadow = true;
@@ -488,7 +498,7 @@ function ballPhysics()
 	}
 	
 	// if ball goes off the top side (side of table)
-	if (ball.position.y <= -fieldHeight/2)
+	if (ball.position.y <= (-fieldHeight/2)+wallWidth)
 	{
 		ballDirY = -ballDirY;
 		//ball.rotation.setY(ballDirY*ballSpeed);
@@ -496,7 +506,7 @@ function ballPhysics()
 	}	
 
 	// if ball goes off the bottom side (side of table)
-	if (ball.position.y >= fieldHeight/2)
+	if (ball.position.y >= (fieldHeight/2)-2)
 	{
 		ballDirY = -ballDirY;
 		//ball.rotation.setY(ballDirY*ballSpeed);
@@ -687,8 +697,6 @@ function paddlePhysics()
 	// PLAYER PADDLE LOGIC
 	
 	// if ball is aligned with paddle1 on x plane
-	// remember the position is the CENTER of the object
-	// we only check between the front and the middle of the paddle (one-way collision)
 	if (ball.position.x <= paddle1.position.x + paddleWidth
 	&&  ball.position.x >= paddle1.position.x)
 	{
